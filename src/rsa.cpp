@@ -1,3 +1,8 @@
+/**
+ * @file rsa.cpp
+ * @brief Implements the RSA encryption and signature library functions.
+ */
+
 #include "rsa.hpp"
 
 #include <limits>
@@ -5,6 +10,7 @@
 namespace rsa {
 
 namespace {
+/// The maximum value for a standard ASCII character (and extended ASCII).
 constexpr uint64_t kAsciiLimit = 255;
 }
 
@@ -102,6 +108,30 @@ std::string Cipher::decrypt(const std::vector<uint64_t> &ciphertext, const Priva
     }
 
     return plaintext;
+}
+
+std::vector<uint64_t> Cipher::sign(const std::string &message, const PrivateKey &key) {
+    validateKeyModulus(key.modulus);
+
+    std::vector<uint64_t> signature;
+    signature.reserve(message.size());
+
+    for (const unsigned char ch : message) {
+        const uint64_t signed_char = modularExponentiation(static_cast<uint64_t>(ch), key.exponent, key.modulus);
+        signature.push_back(signed_char);
+    }
+
+    return signature;
+}
+
+bool Cipher::verify(const std::string &message, const std::vector<uint64_t> &signature, const PublicKey &key) {
+    if (message.length() != signature.size()) {
+        return false;
+    }
+
+    const std::string decrypted_signature_str = decrypt(signature, PrivateKey{key.modulus, key.exponent});
+
+    return message == decrypted_signature_str;
 }
 
 uint64_t Cipher::modularExponentiation(uint64_t base, uint64_t exponent, uint64_t modulus) {
