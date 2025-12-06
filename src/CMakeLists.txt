@@ -1,10 +1,12 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(AesAlgo CXX)
+project(RsaAlgo CXX)
 
-set(SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/AesAlgo.cpp)
-set(INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
+find_package(OpenSSL REQUIRED)
+
+set(SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/RsaAlgo.cpp)
 
 add_library(${PROJECT_NAME} ${SOURCE_FILES})
 
-target_include_directories(${PROJECT_NAME} PUBLIC ${INCLUDE_DIR})
+target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_link_libraries(${PROJECT_NAME} PUBLIC OpenSSL::Crypto)
