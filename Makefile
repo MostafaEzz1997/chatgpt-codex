@@ -44,7 +44,6 @@ $(BUILD_DIR):
 	@command -v $(CMAKE) >/dev/null 2>&1 || (echo "ERROR: '$(CMAKE)' not found. Please install CMake or add it to your PATH." && exit 1)
 	@$(CMAKE) -S . -B $(BUILD_DIR) -DCMAKE_BUILD_TYPE=$(BUILD_TYPE) \
 		-DCMAKE_CXX_STANDARD=$(CXX_STANDARD) \
-		-G "MinGW Makefiles" \
 		-DCMAKE_CXX_STANDARD_REQUIRED=ON \
 		-DCMAKE_CXX_EXTENSIONS=OFF
 
