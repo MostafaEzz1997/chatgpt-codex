@@ -1,0 +1,35 @@
+# RSA Utility Library
+
+This repository contains a lightweight C++ RSA library with a clear header/source separation for readability. The `main.cpp` file demonstrates typical scenarios you can run directly.
+
+## Files
+- `include/rsa.hpp`: Public API for generating RSA keys and performing encryption/decryption.
+- `src/rsa.cpp`: Implementation of key generation helpers, modular arithmetic, and cipher operations.
+- `src/main.cpp`: Demonstrates round-trip encryption/decryption and an invalid-key test case.
+
+## Build and Run
+
+Compile the demo from the repository root:
+
+```
+g++ -std=c++17 -Iinclude src/main.cpp src/rsa.cpp -o rsa_demo
+./rsa_demo
+```
+
+### Using Make
+
+You can also build with `make` from the repository root:
+
+```
+make        # builds rsa_demo (same as `make all`)
+./rsa_demo  # run the demo after building
+make clean  # remove the rsa_demo binary
+```
+
+## Demo Scenarios
+The `main.cpp` program exercises the library in three ways:
+1. **Short message round-trip** using primes 61 and 53 with exponent 17.
+2. **Punctuation round-trip** using primes 71 and 79 with exponent 97.
+3. **Invalid exponent handling** with exponent 9 (not coprime with the totient), showing the expected error message.
+
+These scenarios print the ciphertext blocks and decrypted text (for the round-trips) or the caught exception message for the invalid exponent case.
