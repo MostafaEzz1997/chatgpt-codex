@@ -14,27 +14,24 @@ namespace {
 constexpr uint64_t kAsciiLimit = 255;
 }
 
-PublicKey KeyGenerator::makePublicKey(uint64_t prime1, uint64_t prime2, uint64_t publicExponent) {
+KeyGenerator::KeyComponents KeyGenerator::prepareKeyComponents(uint64_t prime1, uint64_t prime2, uint64_t publicExponent) {
     const uint64_t modulus = prime1 * prime2;
     const uint64_t totient = computeTotient(prime1, prime2);
 
     if (gcd(publicExponent, totient) != 1) {
         throw std::invalid_argument("Public exponent must be coprime with totient");
     }
-
-    return PublicKey{modulus, publicExponent};
+    return {modulus, totient};
 }
 
-PrivateKey KeyGenerator::makePrivateKey(uint64_t prime1, uint64_t prime2, uint64_t publicExponent) {
-    const uint64_t modulus = prime1 * prime2;
-    const uint64_t totient = computeTotient(prime1, prime2);
+PublicKey KeyGenerator::makePublicKey(uint64_t prime1, uint64_t prime2, uint64_t publicExponent) {
+    const auto components = KeyGenerator::prepareKeyComponents(prime1, prime2, publicExponent);
+    return PublicKey{components.modulus, publicExponent};
+}
 
-    if (gcd(publicExponent, totient) != 1) {
-        throw std::invalid_argument("Public exponent must be coprime with totient");
-    }
-
-    const uint64_t privateExponent = modularInverse(publicExponent, totient);
-    return PrivateKey{modulus, privateExponent};
+PrivateKey KeyGenerator::makePrivateKey(uint64_t prime1, uint64_t prime2, uint64_t publicExponent) {    const auto components = KeyGenerator::prepareKeyComponents(prime1, prime2, publicExponent);
+    const uint64_t privateExponent = modularInverse(publicExponent, components.totient);
+    return PrivateKey{components.modulus, privateExponent};
 }
 
 uint64_t KeyGenerator::computeTotient(uint64_t prime1, uint64_t prime2) {

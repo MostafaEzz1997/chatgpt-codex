@@ -63,6 +63,16 @@ public:
     static PrivateKey makePrivateKey(uint64_t prime1, uint64_t prime2, uint64_t publicExponent);
 
 private:
+    /// @brief A helper struct to hold common values during key generation.
+    struct KeyComponents {
+        uint64_t modulus;
+        uint64_t totient;
+    };
+
+    /**
+     * @brief Performs the common setup steps for key generation.
+     */
+    static KeyComponents prepareKeyComponents(uint64_t prime1, uint64_t prime2, uint64_t publicExponent);
     /**
      * @brief Computes Euler's totient function for n = p * q.
      * @param prime1 The first prime number (p).
