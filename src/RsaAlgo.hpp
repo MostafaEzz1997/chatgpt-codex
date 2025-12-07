@@ -40,6 +40,10 @@ public:
     static BigNumPtr decryptNormal(const BIGNUM *cipher, const BIGNUM *d, const BIGNUM *n);
     static BigNumPtr decryptSquareMultiply(const BIGNUM *cipher, const BIGNUM *d, const BIGNUM *n);
 
+    static BigNumPtr signMessage(const BIGNUM *message, const BIGNUM *d, const BIGNUM *n);
+    static bool verifySignature(const BIGNUM *signature, const BIGNUM *expectedMessage, const BIGNUM *e,
+                                const BIGNUM *n);
+
     static BigNumPtr messageToInt(const std::string &message);
     static std::string intToMessage(const BIGNUM *value);
 
