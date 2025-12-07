@@ -296,6 +296,19 @@ BigNumPtr RsaAlgo::decryptSquareMultiply(const BIGNUM *cipher, const BIGNUM *d, 
     return modExpSquareAndMultiply(cipher, d, n);
 }
 
+BigNumPtr RsaAlgo::signMessage(const BIGNUM *message, const BIGNUM *d, const BIGNUM *n) {
+    if (BN_cmp(message, n) >= 0) {
+        throw std::runtime_error("Message too large for modulus");
+    }
+    return modExpSquareAndMultiply(message, d, n);
+}
+
+bool RsaAlgo::verifySignature(const BIGNUM *signature, const BIGNUM *expectedMessage, const BIGNUM *e,
+                              const BIGNUM *n) {
+    BigNumPtr recovered = modExpSquareAndMultiply(signature, e, n);
+    return BN_cmp(recovered.get(), expectedMessage) == 0;
+}
+
 RsaKeyPair RsaAlgo::generateKeyPair(std::size_t key_bits) {
     if (key_bits % 128 != 0 || key_bits < MIN_KEY_BITS || key_bits > MAX_KEY_BITS) {
         throw std::runtime_error("Unsupported key size; choose 128, 256, 512, 1024, 2048, or 4096 bits");
