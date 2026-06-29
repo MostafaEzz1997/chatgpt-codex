@@ -46,21 +46,6 @@ jobs:
           EOF
           fi
 
-      - name: Ensure splash screen background color exists
-        run: |
-          COLORS_FILE="android/app/src/main/res/values/colors.xml"
-          mkdir -p "$(dirname "$COLORS_FILE")"
-
-          if [ ! -f "$COLORS_FILE" ]; then
-            cat > "$COLORS_FILE" <<'EOF'
-          <resources>
-              <color name="splashscreen_background">#FFFFFF</color>
-          </resources>
-          EOF
-          elif ! grep -q 'name="splashscreen_background"' "$COLORS_FILE"; then
-            sed -i '/<\/resources>/i\    <color name="splashscreen_background">#FFFFFF</color>' "$COLORS_FILE"
-          fi
-
       - name: Build release APK
         run: cd android && chmod +x ./gradlew && ./gradlew assembleRelease
 
