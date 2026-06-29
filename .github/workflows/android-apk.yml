@@ -19,7 +19,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm
 
       - name: Setup Java 17
         uses: actions/setup-java@v4
@@ -28,13 +27,42 @@ jobs:
           java-version: 17
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
       - name: Generate Android project
         run: npx expo prebuild --platform android --non-interactive
 
+      - name: Pin AndroidX Core for Expo SDK compatibility
+        run: |
+          if ! grep -q "androidx.core:core:1.13.1" android/build.gradle; then
+            cat >> android/build.gradle <<'EOF'
+
+          subprojects {
+              configurations.configureEach {
+                  resolutionStrategy.force 'androidx.core:core:1.13.1'
+                  resolutionStrategy.force 'androidx.core:core-ktx:1.13.1'
+              }
+          }
+          EOF
+          fi
+
+      - name: Ensure splash screen background color exists
+        run: |
+          COLORS_FILE="android/app/src/main/res/values/colors.xml"
+          mkdir -p "$(dirname "$COLORS_FILE")"
+
+          if [ ! -f "$COLORS_FILE" ]; then
+            cat > "$COLORS_FILE" <<'EOF'
+          <resources>
+              <color name="splashscreen_background">#FFFFFF</color>
+          </resources>
+          EOF
+          elif ! grep -q 'name="splashscreen_background"' "$COLORS_FILE"; then
+            sed -i '/<\/resources>/i\    <color name="splashscreen_background">#FFFFFF</color>' "$COLORS_FILE"
+          fi
+
       - name: Build release APK
-        run: cd android && ./gradlew assembleRelease
+        run: cd android && chmod +x ./gradlew && ./gradlew assembleRelease
 
       - name: Copy APK to build directory
         run: |
