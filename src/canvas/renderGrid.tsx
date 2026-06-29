@@ -1,0 +1,2 @@
+import React from 'react'; import { Group, Line } from '@shopify/react-native-skia'; import { Room } from '../domain/models/Room';
+export const RenderGrid=({room,size}:{room:Room;size:number})=><Group>{Array.from({length:Math.floor(room.widthCm/size)+1},(_,i)=><Line key={`x${i}`} p1={{x:i*size,y:0}} p2={{x:i*size,y:room.heightCm}} color="#e5e0d8" strokeWidth={1}/>)}{Array.from({length:Math.floor(room.heightCm/size)+1},(_,i)=><Line key={`y${i}`} p1={{x:0,y:i*size}} p2={{x:room.widthCm,y:i*size}} color="#e5e0d8" strokeWidth={1}/>)}</Group>;

@@ -1,0 +1,2 @@
+import React from 'react'; import { Group, Rect } from '@shopify/react-native-skia'; import { Furniture } from '../domain/models/Furniture'; import { getFurnitureParts } from '../geometry/compoundShape';
+export const RenderFurniture=({items,collidingIds}:{items:Furniture[];collidingIds:Set<string>})=><Group>{items.flatMap(f=>getFurnitureParts(f).map((p,i)=><Rect key={`${f.id}-${i}`} x={p.xCm} y={p.yCm} width={p.widthCm} height={p.heightCm} color={collidingIds.has(f.id)?'#fca5a5':f.color}/>))}</Group>;

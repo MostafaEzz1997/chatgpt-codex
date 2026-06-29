@@ -1,0 +1,1 @@
+import React from 'react'; import { View } from 'react-native'; export default function AppToolbar({children}:{children:React.ReactNode}){return <View style={{flexDirection:'row',flexWrap:'wrap',gap:4}}>{children}</View>}

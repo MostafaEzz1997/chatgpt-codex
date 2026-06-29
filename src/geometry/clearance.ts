@@ -1,0 +1,4 @@
+import { Room } from '../domain/models/Room'; import { Furniture } from '../domain/models/Furniture'; import { PlannerSettings } from '../domain/models/PlannerSettings'; import { getFurnitureBoundingBox } from './compoundShape'; import { rectDistance } from './rect';
+export const calculateClearancesForFurniture=(room:Room,f:Furniture)=>{const b=getFurnitureBoundingBox(f);return{left:b.xCm,right:room.widthCm-b.xCm-b.widthCm,top:b.yCm,bottom:room.heightCm-b.yCm-b.heightCm,nearestFurniture:Math.min(...room.furniture.filter(x=>x.id!==f.id).map(x=>rectDistance(b,getFurnitureBoundingBox(x))),Infinity)}};
+export const calculateAllClearances=(room:Room)=>Object.fromEntries(room.furniture.map(f=>[f.id,calculateClearancesForFurniture(room,f)]));
+export const checkMinimumPassage=(room:Room,settings:PlannerSettings)=>room.walkingPaths.filter(p=>p.widthCm<settings.minPassageCm).map(p=>({pathId:p.id,widthCm:p.widthCm}));

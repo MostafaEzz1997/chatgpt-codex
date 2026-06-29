@@ -1,0 +1,3 @@
+import { describe,it,expect } from 'vitest'; import { distancePointToSegment,pathBlockedByFurniture } from '../geometry/path'; import { Room } from '../domain/models/Room';
+const room:Room={id:'r',name:'R',widthCm:300,heightCm:200,openings:[],walkingPaths:[],furniture:[{id:'f',type:'r',category:'c',name:'F',xCm:90,yCm:40,widthCm:40,depthCm:40,rotationDeg:0,color:'#000',shapeType:'rect'}]};
+describe('paths',()=>{it('walking path distance to segment',()=>expect(distancePointToSegment({xCm:5,yCm:5},{xCm:0,yCm:0},{xCm:10,yCm:0})).toBe(5));it('walking path blocked by furniture',()=>expect(pathBlockedByFurniture({id:'p',name:'P',x1Cm:0,y1Cm:60,x2Cm:200,y2Cm:60,widthCm:30},room)?.id).toBe('f'));});

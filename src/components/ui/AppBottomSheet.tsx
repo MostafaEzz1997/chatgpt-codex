@@ -1,0 +1,3 @@
+import React from 'react'; import { Modal, View, Text, StyleSheet, Pressable, ScrollView } from 'react-native';
+export default function AppBottomSheet({visible,title,onClose,children}:{visible:boolean;title:string;onClose:()=>void;children?:React.ReactNode}){return <Modal visible={visible} transparent animationType="slide"><Pressable style={s.backdrop} onPress={onClose}/><View style={s.sheet}><Text style={s.title}>{title}</Text><ScrollView>{children}</ScrollView></View></Modal>}
+const s=StyleSheet.create({backdrop:{flex:1,backgroundColor:'#0005'},sheet:{maxHeight:'78%',backgroundColor:'#fffdfa',padding:16,borderTopLeftRadius:24,borderTopRightRadius:24},title:{fontSize:18,fontWeight:'800',marginBottom:8}});
