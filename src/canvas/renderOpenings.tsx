@@ -1,0 +1,2 @@
+import React from 'react'; import { Group, Rect } from '@shopify/react-native-skia'; import { Room } from '../domain/models/Room';
+export const RenderOpenings=({room}:{room:Room})=><Group>{room.openings.map(o=>{const r=o.wall==='top'?{x:o.positionCm,y:-4,w:o.sizeCm,h:8}:o.wall==='bottom'?{x:o.positionCm,y:room.heightCm-4,w:o.sizeCm,h:8}:o.wall==='left'?{x:-4,y:o.positionCm,w:8,h:o.sizeCm}:{x:room.widthCm-4,y:o.positionCm,w:8,h:o.sizeCm}; return <Rect key={o.id} x={r.x} y={r.y} width={r.w} height={r.h} color={o.type==='window'?'#38bdf8':'#92400e'}/>})}</Group>;

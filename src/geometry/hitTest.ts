@@ -1,0 +1,6 @@
+import { Room } from '../domain/models/Room'; import { Point, rectContainsPoint } from './rect'; import { compoundContainsPoint } from './compoundShape'; import { distancePointToSegment } from './path';
+const openingRect=(room:Room,o:Room['openings'][number],t:number)=> o.wall==='top'?{xCm:o.positionCm,yCm:-t,widthCm:o.sizeCm,heightCm:t*2}:o.wall==='bottom'?{xCm:o.positionCm,yCm:room.heightCm-t,widthCm:o.sizeCm,heightCm:t*2}:o.wall==='left'?{xCm:-t,yCm:o.positionCm,widthCm:t*2,heightCm:o.sizeCm}:{xCm:room.widthCm-t,yCm:o.positionCm,widthCm:t*2,heightCm:o.sizeCm};
+export const hitTestFurniture=(room:Room,p:Point)=>[...room.furniture].reverse().find(f=>compoundContainsPoint(f,p));
+export const hitTestOpening=(room:Room,p:Point,toleranceCm=12)=>room.openings.find(o=>rectContainsPoint(openingRect(room,o,toleranceCm),p));
+export const hitTestWalkingPath=(room:Room,p:Point,toleranceCm=12)=>room.walkingPaths.find(w=>distancePointToSegment(p,{xCm:w.x1Cm,yCm:w.y1Cm},{xCm:w.x2Cm,yCm:w.y2Cm})<=w.widthCm/2+toleranceCm);
+export const hitTestPlanner=(room:Room,p:Point)=>{const f=hitTestFurniture(room,p); if(f)return{type:'furniture' as const,id:f.id}; const o=hitTestOpening(room,p); if(o)return{type:'opening' as const,id:o.id}; const w=hitTestWalkingPath(room,p); if(w)return{type:'path' as const,id:w.id}; return{type:null,id:null};};

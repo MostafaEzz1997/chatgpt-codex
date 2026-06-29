@@ -1,0 +1,23 @@
+Room Layout Studio Android build report
+Generated: 2026-06-29T10:39:59Z
+
+Requested artifact: Android APK/AAB ready to install.
+Status: Not produced in this container.
+
+Blocking issue:
+- npm install cannot fetch project dependencies because outbound registry requests are rejected with HTTP 403 by the environment/proxy.
+- The container also does not include Android SDK/build tools (android.jar, aapt/aapt2, d8, apksigner), so a native Android APK cannot be compiled locally without installing dependencies/tooling.
+
+Commands attempted:
+- npm install
+- tsc --noEmit
+- vitest run
+- java -version
+- gradle -v
+- find / -name android.jar
+
+How to produce the APK on a normal Android/Expo machine:
+1. npm install
+2. npx expo prebuild --platform android
+3. cd android && ./gradlew assembleRelease
+4. copy android/app/build/outputs/apk/release/app-release.apk to build/room-layout-studio.apk

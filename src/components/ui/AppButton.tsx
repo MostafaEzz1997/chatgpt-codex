@@ -1,0 +1,3 @@
+import React from 'react'; import { Pressable, Text, StyleSheet } from 'react-native'; import { colors } from '../../theme/colors';
+export default function AppButton({title,onPress,variant='primary'}:{title:string;onPress:()=>void;variant?:'primary'|'danger'|'ghost'}){return <Pressable onPress={onPress} style={[s.btn,variant==='danger'&&s.danger,variant==='ghost'&&s.ghost]}><Text style={[s.txt,variant==='ghost'&&s.ghostTxt]}>{title}</Text></Pressable>}
+const s=StyleSheet.create({btn:{backgroundColor:colors.primary,padding:12,borderRadius:12,alignItems:'center',margin:4},danger:{backgroundColor:colors.danger},ghost:{backgroundColor:'transparent',borderWidth:1,borderColor:colors.line},txt:{color:'white',fontWeight:'700'},ghostTxt:{color:colors.ink}});

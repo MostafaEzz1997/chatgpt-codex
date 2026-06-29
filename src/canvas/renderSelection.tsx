@@ -1,0 +1,2 @@
+import React from 'react'; import { Rect } from '@shopify/react-native-skia'; import { Furniture } from '../domain/models/Furniture'; import { getFurnitureBoundingBox } from '../geometry/compoundShape';
+export const RenderSelection=({furniture}:{furniture?:Furniture})=>{if(!furniture)return null; const b=getFurnitureBoundingBox(furniture); return <Rect x={b.xCm-4} y={b.yCm-4} width={b.widthCm+8} height={b.heightCm+8} color="#2563eb" style="stroke" strokeWidth={3}/>};
