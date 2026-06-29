@@ -8,9 +8,6 @@
       "android",
       "ios"
     ],
-    "plugins": [
-      "react-native-reanimated"
-    ],
     "android": {
       "package": "com.roomlayoutstudio.app"
     }

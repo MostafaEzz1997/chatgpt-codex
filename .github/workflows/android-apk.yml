@@ -19,7 +19,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm
 
       - name: Setup Java 17
         uses: actions/setup-java@v4
@@ -28,13 +27,13 @@ jobs:
           java-version: 17
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
       - name: Generate Android project
         run: npx expo prebuild --platform android --non-interactive
 
       - name: Build release APK
-        run: cd android && ./gradlew assembleRelease
+        run: cd android && chmod +x ./gradlew && ./gradlew assembleRelease
 
       - name: Copy APK to build directory
         run: |
