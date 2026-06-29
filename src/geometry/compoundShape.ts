@@ -1,0 +1,9 @@
+import { Furniture, Rect } from '../domain/models/Furniture'; import { Point, rectContainsPoint, rectIntersects } from './rect';
+const rot=(r:Rect,w:number,d:number,deg:number):Rect=>{if(deg===90)return{xCm:d-r.yCm-r.heightCm,yCm:r.xCm,widthCm:r.heightCm,heightCm:r.widthCm}; if(deg===180)return{xCm:w-r.xCm-r.widthCm,yCm:d-r.yCm-r.heightCm,widthCm:r.widthCm,heightCm:r.heightCm}; if(deg===270)return{xCm:r.yCm,yCm:w-r.xCm-r.widthCm,widthCm:r.heightCm,heightCm:r.widthCm}; return r;};
+export const getFurnitureParts=(f:Furniture):Rect[]=>{const base=f.shapeType==='compound'&&f.parts?.length?f.parts:[{xCm:0,yCm:0,widthCm:f.widthCm,heightCm:f.depthCm}];return base.map(p=>{const rr=rot(p,f.widthCm,f.depthCm,f.rotationDeg);return{xCm:f.xCm+rr.xCm,yCm:f.yCm+rr.yCm,widthCm:rr.widthCm,heightCm:rr.heightCm}})};
+export const getFurnitureBoundingBox=(f:Furniture):Rect=>{const p=getFurnitureParts(f);const minX=Math.min(...p.map(r=>r.xCm)),minY=Math.min(...p.map(r=>r.yCm));const maxX=Math.max(...p.map(r=>r.xCm+r.widthCm)),maxY=Math.max(...p.map(r=>r.yCm+r.heightCm));return{xCm:minX,yCm:minY,widthCm:maxX-minX,heightCm:maxY-minY}};
+export const compoundContainsPoint=(f:Furniture,p:Point):boolean=>getFurnitureParts(f).some(r=>rectContainsPoint(r,p));
+export const compoundIntersectsRect=(f:Furniture,r:Rect):boolean=>getFurnitureParts(f).some(p=>rectIntersects(p,r));
+export const compoundIntersectsFurniture=(a:Furniture,b:Furniture):boolean=>getFurnitureParts(a).some(ar=>getFurnitureParts(b).some(br=>rectIntersects(ar,br)));
+export const rotateCompoundShape90=(f:Furniture):Furniture=>({...f,rotationDeg:(((f.rotationDeg+90)%360) as Furniture['rotationDeg'])});
+export const resizeCompoundShape=(f:Furniture,nextWidthCm:number,nextDepthCm:number):Furniture=>{const sx=nextWidthCm/f.widthCm, sy=nextDepthCm/f.depthCm;return{...f,widthCm:nextWidthCm,depthCm:nextDepthCm,parts:f.parts?.map(p=>({xCm:p.xCm*sx,yCm:p.yCm*sy,widthCm:p.widthCm*sx,heightCm:p.heightCm*sy}))}};

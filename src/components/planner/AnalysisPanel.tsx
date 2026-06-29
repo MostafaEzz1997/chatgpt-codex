@@ -1,0 +1,2 @@
+import React from 'react'; import { View, Text } from 'react-native'; import { AnalysisResult } from '../../domain/models/Analysis';
+export default function AnalysisPanel({analysis}:{analysis:AnalysisResult}){return <View style={{padding:8,backgroundColor:analysis.score==='good'?'#dcfce7':analysis.score==='warning'?'#fef3c7':'#fee2e2'}}><Text style={{fontWeight:'800'}}>Analysis: {analysis.score}</Text>{analysis.messages.slice(0,4).map(m=><Text key={m.id}>• {m.text}</Text>)}</View>}

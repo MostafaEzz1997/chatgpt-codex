@@ -1,0 +1,18 @@
+{
+  "expo": {
+    "name": "Room Layout Studio",
+    "slug": "room-layout-studio",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "platforms": [
+      "android",
+      "ios"
+    ],
+    "plugins": [
+      "react-native-reanimated"
+    ],
+    "android": {
+      "package": "com.roomlayoutstudio.app"
+    }
+  }
+}

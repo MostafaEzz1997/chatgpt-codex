@@ -1,0 +1,2 @@
+export type PlannerSettings = { showGrid:boolean; snapToGrid:boolean; gridSizeCm:number; showSelectedClearances:boolean; showAllClearances:boolean; showFurnitureDimensions:boolean; showWalkingPaths:boolean; minPassageCm:number };
+export const defaultSettings: PlannerSettings = {showGrid:true,snapToGrid:true,gridSizeCm:20,showSelectedClearances:true,showAllClearances:false,showFurnitureDimensions:true,showWalkingPaths:true,minPassageCm:80};

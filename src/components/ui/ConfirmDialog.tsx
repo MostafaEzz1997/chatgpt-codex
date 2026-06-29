@@ -1,0 +1,2 @@
+import React from 'react'; import AppBottomSheet from './AppBottomSheet'; import AppButton from './AppButton';
+export default function ConfirmDialog({visible,onCancel,onConfirm,title}:{visible:boolean;onCancel:()=>void;onConfirm:()=>void;title:string}){return <AppBottomSheet visible={visible} title={title} onClose={onCancel}><AppButton title="Confirm" onPress={onConfirm} variant="danger"/><AppButton title="Cancel" onPress={onCancel} variant="ghost"/></AppBottomSheet>}

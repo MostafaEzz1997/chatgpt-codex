@@ -1,0 +1,3 @@
+import { Project } from '../domain/models/Project'; import { createDefaultProject } from '../planner/defaultProject'; import { validateProjectArray } from '../planner/validation'; import { localStorage } from './localStorage';
+const KEY='room-layout-studio/projects/v1';
+export const projectRepository={async loadProjects():Promise<Project[]>{try{const raw=await localStorage.get(KEY); if(!raw)return[createDefaultProject()]; const parsed=JSON.parse(raw) as unknown; return validateProjectArray(parsed)?parsed:[createDefaultProject()];}catch{return[createDefaultProject()];}}, async saveProjects(projects:Project[]){await localStorage.set(KEY,JSON.stringify(projects));}};
