@@ -32,6 +32,20 @@ jobs:
       - name: Generate Android project
         run: npx expo prebuild --platform android --non-interactive
 
+      - name: Pin AndroidX Core for Expo SDK compatibility
+        run: |
+          if ! grep -q "androidx.core:core:1.13.1" android/build.gradle; then
+            cat >> android/build.gradle <<'EOF'
+
+          subprojects {
+              configurations.configureEach {
+                  resolutionStrategy.force 'androidx.core:core:1.13.1'
+                  resolutionStrategy.force 'androidx.core:core-ktx:1.13.1'
+              }
+          }
+          EOF
+          fi
+
       - name: Build release APK
         run: cd android && chmod +x ./gradlew && ./gradlew assembleRelease
 
